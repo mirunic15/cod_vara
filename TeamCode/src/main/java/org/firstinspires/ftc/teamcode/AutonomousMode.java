@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class AutonomousMode extends RobotHardware {
 
     static final int TICS_PER_CM = 67;
-    static float AngleRelativ = 0;
+    static double AngleRelativ = 0;
     static float LastAngle = 0;
 
     @Override
@@ -67,8 +67,8 @@ public class AutonomousMode extends RobotHardware {
     }
 
  protected void Rotire (int unghi) {
-     float currentPosition = GetAngle();
-        float endPosition = currentPosition + unghi;
+     double currentPosition = GetAngle();
+        double endPosition = currentPosition + unghi;
         int stopZone = 10;
 
         double viteza = Math.signum(unghi)*0.2;
@@ -93,8 +93,8 @@ public class AutonomousMode extends RobotHardware {
             return currentPosition;
         }
 
-        protected float GetAngle() {
-            float detltaAngle = GetGlobalAngle() -  LastAngle;
+        protected double GetAngle() {
+            double detltaAngle = GetGlobalAngle() -  LastAngle;
 
             if (detltaAngle>180){
                 detltaAngle -=360;
