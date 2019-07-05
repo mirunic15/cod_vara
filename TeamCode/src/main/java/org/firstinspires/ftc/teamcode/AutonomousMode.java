@@ -35,20 +35,6 @@ public class AutonomousMode extends RobotHardware {
         }
     }
 
-    protected void StopMotors() {
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
-    }
-
-    protected void SetMotorsPower(double fl, double fr, double bl, double br) {
-        FL.setPower(fl);
-        FR.setPower(fr);
-        BL.setPower(bl);
-        BR.setPower(br);
-    }
-
     private void Strafe(StrafeDirection Direction, int durata, double speed){
         if (Direction == StrafeDirection.BACKWARD){
             SetMotorsPower(speed, speed, speed, speed);

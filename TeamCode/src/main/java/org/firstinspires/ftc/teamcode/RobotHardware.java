@@ -21,7 +21,6 @@ public abstract class RobotHardware extends LinearOpMode {
         BL = hardwareMap.dcMotor.get("Motor Spate Stanga");
         BR = hardwareMap.dcMotor.get("Motor Spate Dreapta");
         FR = hardwareMap.dcMotor.get("Motor Fata Dreapta");
-        /*gyro = (ModernRoboticsI2cGyro) hardwareMap.gyroSensor.get("gyro");*/
 
         //directie motoare
         FL.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -46,5 +45,19 @@ public abstract class RobotHardware extends LinearOpMode {
         FR.setPower(0);
         BL.setPower(0);
         BR.setPower(0);
+    }
+
+    protected void StopMotors() {
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+    }
+
+    protected void SetMotorsPower(double fl, double fr, double bl, double br) {
+        FL.setPower(fl);
+        FR.setPower(fr);
+        BL.setPower(bl);
+        BR.setPower(br);
     }
  }

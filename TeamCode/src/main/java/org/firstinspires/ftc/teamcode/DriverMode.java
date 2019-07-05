@@ -31,10 +31,7 @@ public class DriverMode extends RobotHardware {
             BL.setPower(Range.clip(gamepad1.left_stick_y + gamepad1.left_stick_x - gamepad1.right_stick_x, -0.7, 0.7));
             BR.setPower(Range.clip(gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x, -0.7, 0.7));
         } else {
-            FL.setPower(0);
-            FR.setPower(0);
-            BL.setPower(0);
-            BR.setPower(0);
+            StopMotors();
         }
 
     }
