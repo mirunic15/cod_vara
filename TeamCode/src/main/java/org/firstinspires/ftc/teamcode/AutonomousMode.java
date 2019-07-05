@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class AutonomousMode extends RobotHardware {
 
     static final int TICS_PER_CM = 67;
+    static float AngleRelativ = 0;
+    static float LastAngle = 0;
 
     @Override
     public void runOpMode() {
@@ -23,8 +25,8 @@ public class AutonomousMode extends RobotHardware {
             // TEST
             /*Rotire(90);
             Rotire(-90);*/
-            Strafe(StrafeDirection.FORWARD, 1, 0.5);
-            Strafe(StrafeDirection.BACKWARD,1, 0.5);
+            Strafe(StrafeDirection.FORWARD, 1, 0.7);
+            Strafe(StrafeDirection.BACKWARD,1, 0.7);
             Strafe(StrafeDirection.LEFT,1, 0.7);
             Strafe(StrafeDirection.RIGHT,1, 0.7);
             Strafe(StrafeDirection.FORWARDLEFT,1, 0.7);
@@ -35,7 +37,7 @@ public class AutonomousMode extends RobotHardware {
         }
     }
 
-    private void Strafe(StrafeDirection Direction, int durata, double speed){
+    protected void Strafe(StrafeDirection Direction, int durata, double speed){
         if (Direction == StrafeDirection.BACKWARD){
             SetMotorsPower(speed, speed, speed, speed);
             sleep(durata * 1000);
@@ -65,23 +67,22 @@ public class AutonomousMode extends RobotHardware {
     }
 
  protected void Rotire (int unghi) {
-     float currentPosition = GetGlobalAngle();
+     float currentPosition = GetAngle();
         float endPosition = currentPosition + unghi;
         int stopZone = 10;
 
-        double viteza = Math.signum(unghi)*0.5;
+        double viteza = Math.signum(unghi)*0.2;
 
-        if (endPosition>360){
-            endPosition -=360;
-        } else if (endPosition  < 0) {
-            endPosition += 360;
-        }
 
-        while (!(endPosition - stopZone < GetGlobalAngle()) && (GetGlobalAngle() < endPosition + stopZone)){
+        while ( opModeIsActive() && (!(endPosition - stopZone < GetAngle()) && (GetAngle() < endPosition + stopZone))){
                 FL.setPower(viteza);
                 BR.setPower(-viteza);
                 FR.setPower(-viteza);
                 BL.setPower(viteza);
+
+                telemetry.addData("Gyro:", GetAngle());
+                telemetry.addData("End Position:", endPosition);
+                telemetry.update();
             }
         StopMotors();
 
@@ -90,6 +91,26 @@ public class AutonomousMode extends RobotHardware {
         protected float GetGlobalAngle() {
             float currentPosition = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
             return currentPosition;
+        }
+
+        protected float GetAngle() {
+            float detltaAngle = GetGlobalAngle() -  LastAngle;
+
+            if (detltaAngle>180){
+                detltaAngle -=360;
+            } else if (detltaAngle  < -180) {
+                detltaAngle += 360;
+            }
+
+            LastAngle = GetGlobalAngle();
+            AngleRelativ += detltaAngle;
+            return AngleRelativ;
+
+        }
+
+        protected void ResetAngle () {
+            AngleRelativ = 0;
+            LastAngle = GetGlobalAngle();
         }
 
     }

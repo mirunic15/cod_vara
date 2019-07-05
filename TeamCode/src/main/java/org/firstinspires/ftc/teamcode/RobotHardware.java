@@ -26,10 +26,10 @@ public abstract class RobotHardware extends LinearOpMode {
     protected void Initialise() {
 
         //mapare
-        FL = hardwareMap.dcMotor.get("Motor Fata Stanga");
-        BL = hardwareMap.dcMotor.get("Motor Spate Stanga");
-        BR = hardwareMap.dcMotor.get("Motor Spate Dreapta");
-        FR = hardwareMap.dcMotor.get("Motor Fata Dreapta");
+        FL = hardwareMap.dcMotor.get("MotorFL");
+        BL = hardwareMap.dcMotor.get("MotorBL");
+        BR = hardwareMap.dcMotor.get("MotorBR");
+        FR = hardwareMap.dcMotor.get("MotorFR");
 
         //directie motoare
         FL.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -66,16 +66,11 @@ public abstract class RobotHardware extends LinearOpMode {
 
         gyro = hardwareMap.get(BNO055IMU.class, "imu");
         gyro.initialize(parameters);
+
+
     }
 
     protected void StopMotors(){
-        FL.setPower(0);
-        FR.setPower(0);
-        BL.setPower(0);
-        BR.setPower(0);
-    }
-
-    protected void StopMotors() {
         FL.setPower(0);
         FR.setPower(0);
         BL.setPower(0);
@@ -88,4 +83,6 @@ public abstract class RobotHardware extends LinearOpMode {
         BL.setPower(bl);
         BR.setPower(br);
     }
+
+
  }
