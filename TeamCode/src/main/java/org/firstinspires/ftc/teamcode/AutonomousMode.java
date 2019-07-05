@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 
 @Autonomous(name = "AutonomousMode", group = "Autonomous")
 
@@ -14,10 +18,6 @@ public class AutonomousMode extends RobotHardware {
         Initialise();
         waitForStart();
 
-        /*gyro.calibrate();
-        while (gyro.isCalibrating()) {
-            idle();
-        }*/
 
         while (opModeIsActive()) {
             // TEST
@@ -78,13 +78,12 @@ public class AutonomousMode extends RobotHardware {
        StopMotors();
     }
 
-    /*private void Rotire(int unghi) {
-        int currentPosition = gyro.getHeading();
-        int endPosition = currentPosition + unghi;
-        int stopZone = 20;
+ protected void Rotire (int unghi) {
+     float currentPosition = GetGlobalAngle();
+        float endPosition = currentPosition + unghi;
+        int stopZone = 10;
 
-        double fata = 0.5;
-        double spate = -0.5;
+        double viteza = Math.signum(unghi)*0.5;
 
         if (endPosition>360){
             endPosition -=360;
@@ -92,16 +91,22 @@ public class AutonomousMode extends RobotHardware {
             endPosition += 360;
         }
 
-            while (gyro.getHeading() != endPosition){
-                FL.setPower(spate);
-                BR.setPower(spate);
-                FR.setPower(fata);
-                BL.setPower(fata);
+        while (!(endPosition - stopZone < GetGlobalAngle()) && (GetGlobalAngle() < endPosition + stopZone)){
+                FL.setPower(viteza);
+                BR.setPower(-viteza);
+                FR.setPower(-viteza);
+                BL.setPower(viteza);
             }
+        StopMotors();
 
         }
-         StopMotors();
-    }*/
+
+        protected float GetGlobalAngle() {
+            float currentPosition = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+            return currentPosition;
+        }
+
+    }
 
 
-}
+
