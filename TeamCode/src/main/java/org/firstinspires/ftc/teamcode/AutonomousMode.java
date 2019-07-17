@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -66,54 +67,79 @@ public class AutonomousMode extends RobotHardware {
        StopMotors();
     }
 
- protected void Rotire (int unghi) {
-     double currentPosition = GetAngle();
+    protected void Strafe2 (int angle, int speed){
+        
+        if (speed < 0){
+            speed *= -1;
+            angle += 180;
+        }
+        
+        // angle += 90; DC ????
+        
+        double VectorX = Math.cos(Math.toRadians(angle));
+        double VectorY = Math.sin(Math.toRadians(angle));
+
+        double FLBRVector = Range.clip(StrafeSpeedCalc(VectorX, VectorY, true), -1, 1);
+        double FRBLVector = Range.clip(StrafeSpeedCalc(VectorX, VectorY, false), -1, 1);
+
+        double FLBRSpeed = FLBRVector * speed;
+        double FRBLSpeed = FRBLVector * speed;
+        
+        SetMotorsPowerDiagonally(FLBRSpeed, FRBLSpeed);
+
+    }
+    
+    protected void StrafeSpeedCalc (double x, double y, boolean bFLBR){
+        return Range.clip(bFLBR? y + x : y - x, -1, 1);
+    }
+
+    protected void Rotire (int unghi) {
+        double currentPosition = GetAngle();
         double endPosition = currentPosition + unghi;
         int stopZone = 10;
 
-        double viteza = Math.signum(unghi)*0.2;
+        double viteza = Math.signum(unghi) * 0.2;
 
 
-        while ( opModeIsActive() && (!(endPosition - stopZone < GetAngle()) && (GetAngle() < endPosition + stopZone))){
-                FL.setPower(viteza);
-                BR.setPower(-viteza);
-                FR.setPower(-viteza);
-                BL.setPower(viteza);
+        while (opModeIsActive() && (!(endPosition - stopZone < GetAngle()) && (GetAngle() < endPosition + stopZone))) {
+            FL.setPower(viteza);
+            BR.setPower(-viteza);
+            FR.setPower(-viteza);
+            BL.setPower(viteza);
 
-                telemetry.addData("Gyro:", GetAngle());
-                telemetry.addData("End Position:", endPosition);
-                telemetry.update();
-            }
+            telemetry.addData("Gyro:", GetAngle());
+            telemetry.addData("End Position:", endPosition);
+            telemetry.update();
+        }
         StopMotors();
+    }
 
+    protected float GetGlobalAngle() {
+        float currentPosition = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        return currentPosition;
+    }
+
+    protected double GetAngle() {
+        double detltaAngle = GetGlobalAngle() -  LastAngle;
+
+        if (detltaAngle>180){
+            detltaAngle -=360;
+        } else if (detltaAngle  < -180) {
+            detltaAngle += 360;
         }
 
-        protected float GetGlobalAngle() {
-            float currentPosition = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
-            return currentPosition;
-        }
-
-        protected double GetAngle() {
-            double detltaAngle = GetGlobalAngle() -  LastAngle;
-
-            if (detltaAngle>180){
-                detltaAngle -=360;
-            } else if (detltaAngle  < -180) {
-                detltaAngle += 360;
-            }
-
-            LastAngle = GetGlobalAngle();
-            AngleRelativ += detltaAngle;
-            return AngleRelativ;
-
-        }
-
-        protected void ResetAngle () {
-            AngleRelativ = 0;
-            LastAngle = GetGlobalAngle();
-        }
+        LastAngle = GetGlobalAngle();
+        AngleRelativ += detltaAngle;
+        return AngleRelativ;
 
     }
+
+    protected void ResetAngle () {
+        AngleRelativ = 0;
+        LastAngle = GetGlobalAngle();
+    }
+
+}
 
 
 

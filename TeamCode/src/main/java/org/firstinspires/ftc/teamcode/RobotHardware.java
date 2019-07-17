@@ -84,5 +84,11 @@ public abstract class RobotHardware extends LinearOpMode {
         BR.setPower(br);
     }
 
+    protected  void SetMotorsPowerDiagonally(double flbr, double frbl) {
+        FL.setPower(flbr);
+        BR.setPower(flbr);
+        FR.setPower(frbl);
+        BL.setPower(frbl);
+    }
 
  }
