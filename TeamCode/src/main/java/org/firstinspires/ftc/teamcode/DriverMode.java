@@ -11,6 +11,10 @@ import com.qualcomm.robotcore.util.Range;
 public class DriverMode extends RobotHardware {
 
     private double deadzone = 0.1;
+    private int LimitaL = 2103;
+    private int LimitaR = 1989;
+    private boolean Constraints = false;
+    private int ZERO = 0;
 
     @Override
     public void runOpMode() {
@@ -19,6 +23,12 @@ public class DriverMode extends RobotHardware {
 
         while (opModeIsActive()) {
             Gamepad1();
+            Gamepad2();
+
+            telemetry.addData("Extindere Glisiere Positie: ", ExtindereGlisiere.getCurrentPosition());
+            telemetry.addData("Glisiera Stanga: ", GlisieraL.getCurrentPosition());
+            telemetry.addData("Glisiera Dreapta: ", GlisieraR.getCurrentPosition());
+            telemetry.update();
         }
     }
 
@@ -36,31 +46,53 @@ public class DriverMode extends RobotHardware {
 
     }
 
-/*    protected void Gamepad2() {
 
+    protected void Gamepad2() {
 
-    /*protected void Gamepad2() {
-        if(gamepad2.x) rotire_perii.setPower(0.5);
-        else if(gamepad2.y) rotire_perii.setPower(-0.5);
-        else rotire_perii.setPower(0);
+        if (gamepad2.left_trigger > 0) {
+            ExtindereGlisiere.setPower(0.8);
+        } else if (gamepad2.right_trigger > 0) {
+            ExtindereGlisiere.setPower(-0.8);
+        } else {
+            ExtindereGlisiere.setPower(0);
+        }
 
-        if(gamepad2.a) cutie_perii.setPower(0.5);
-        else if(gamepad2.b) cutie_perii.setPower(-0.5);
-        else cutie_perii.setPower(0);
-        
-        /*if(gamepad2.dpad_up) glisiera.setPower(0.5);
-        else if(gamepad2.dpad_down)  glisiera.setPower(-0.5);
-        else glisiera.setPower(0);*/
+        if (Constraints == false) {
+            if (gamepad2.left_bumper) {
+                GlisieraL.setPower(0.3);
+                GlisieraR.setPower(0.3);
+            } else if (gamepad2.right_bumper) {
+                GlisieraL.setPower(-0.3);
+                GlisieraR.setPower(-0.3);
+            } else {
+                GlisieraL.setPower(0);
+                GlisieraR.setPower(0);
+            }
+        } else {
+            if (gamepad2.left_bumper && GlisieraL.getCurrentPosition() < LimitaL && GlisieraR.getCurrentPosition() < LimitaR) {
+                GlisieraL.setPower(0.3);
+                GlisieraR.setPower(0.3);
+            } else if (gamepad2.right_bumper && GlisieraL.getCurrentPosition() > ZERO && GlisieraR.getCurrentPosition() > ZERO) {
+                GlisieraL.setPower(-0.3);
+                GlisieraR.setPower(-0.3);
+            } else {
+                GlisieraL.setPower(0);
+                GlisieraR.setPower(0);
+            }
+        }
 
-        /*if(gamepad2.left_stick_y > deadzone) extindere_perii.setPower(Range.clip(gamepad2.left_stick_y, 0.1, 0.7));
-        else if(gamepad2.left_stick_y < -deadzone) extindere_perii.setPower(Range.clip(gamepad2.left_stick_y, -0.5, -0.1));
+        if (gamepad2.dpad_up) {
+            Constraints = !Constraints;
+        }
 
-        if(gamepad2.dpad_up) glisiera.setPower(0.5);
-        else if(gamepad2.dpad_down)  glisiera.setPower(-0.5);
-        else glisiera.setPower(0);
-
-        if(gamepad2.left_stick_y > deadzone) extindere_perii.setPower(Range.clip(gamepad2.left_stick_y, 0.1, 0.7));
-        else if(gamepad2.left_stick_y < -deadzone) extindere_perii.setPower(Range.clip(gamepad2.left_stick_y, -0.5, - 0.1));
-        else extindere_perii.setPower(0);*/
+        if (gamepad2.a) {
+            ServoCastron.setPosition(0.0);
+        } else if (gamepad2.b) {
+            ServoCastron.setPosition(0.5);
+        } else if (gamepad2.y) {
+            ServoCastron.setPosition(1.0);
+        }
 
     }
+
+}

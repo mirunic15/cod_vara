@@ -29,10 +29,25 @@ public class TestAutonomie extends AutonomousMode {
                 Strafe(StrafeDirection.FORWARDRIGHT, 1, 0.5);
                 Strafe(StrafeDirection.BACKWARDLEFT, 1, 0.5);
                 Strafe(StrafeDirection.BACKWARDRIGHT, 1, 0.5);*/
-                Strafe2(30,0.7);
-                Strafe2(-30,0.7);
+                Strafe2(0,0.7);
+                sleep(2000);
+                StopMotors();
+                sleep(2000);
+
+                Strafe2(180,0.7);
+                sleep(2000);
+                StopMotors();
+                sleep(2000);
+
                 Strafe2(60,0.7);
+                sleep(2000);
+                StopMotors();
+                sleep(2000);
+
                 Strafe2(-60,0.7);
+                sleep(2000);
+                StopMotors();
+                sleep(2000);
             }
         }
     }

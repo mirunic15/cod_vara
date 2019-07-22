@@ -74,7 +74,7 @@ public class AutonomousMode extends RobotHardware {
             angle += 180;
         }
         
-        // angle += 90; DC ????
+        angle -= 90;
         
         double VectorX = Math.cos(Math.toRadians(angle));
         double VectorY = Math.sin(Math.toRadians(angle));
