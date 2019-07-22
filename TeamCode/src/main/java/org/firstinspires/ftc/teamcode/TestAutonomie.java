@@ -21,14 +21,18 @@ public class TestAutonomie extends AutonomousMode {
             if (gamepad1.a) Rotire(90);
             if (gamepad1.b) Rotire(-90);
             if (gamepad1.x) {
-                Strafe(StrafeDirection.FORWARD, 1, 0.5);
+                /*Strafe(StrafeDirection.FORWARD, 1, 0.5);
                 Strafe(StrafeDirection.BACKWARD, 1, 0.5);
                 Strafe(StrafeDirection.LEFT, 1, 0.5);
                 Strafe(StrafeDirection.RIGHT, 1, 0.5);
                 Strafe(StrafeDirection.FORWARDLEFT, 1, 0.5);
                 Strafe(StrafeDirection.FORWARDRIGHT, 1, 0.5);
                 Strafe(StrafeDirection.BACKWARDLEFT, 1, 0.5);
-                Strafe(StrafeDirection.BACKWARDRIGHT, 1, 0.5);
+                Strafe(StrafeDirection.BACKWARDRIGHT, 1, 0.5);*/
+                Strafe2(30,0.7);
+                Strafe2(-30,0.7);
+                Strafe2(60,0.7);
+                Strafe2(-60,0.7);
             }
         }
     }

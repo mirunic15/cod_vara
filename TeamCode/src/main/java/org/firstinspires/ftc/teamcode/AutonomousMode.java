@@ -67,7 +67,7 @@ public class AutonomousMode extends RobotHardware {
        StopMotors();
     }
 
-    protected void Strafe2 (int angle, int speed){
+    protected void Strafe2 (int angle, double speed){
         
         if (speed < 0){
             speed *= -1;
@@ -89,7 +89,7 @@ public class AutonomousMode extends RobotHardware {
 
     }
     
-    protected void StrafeSpeedCalc (double x, double y, boolean bFLBR){
+    protected double StrafeSpeedCalc (double x, double y, boolean bFLBR){
         return Range.clip(bFLBR? y + x : y - x, -1, 1);
     }
 
